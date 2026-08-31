@@ -379,7 +379,7 @@ export default function ResearchReportsClient({ initialData }: ResearchReportsCl
           <div>
             <div className="flex items-center gap-3">
               <Link href="/" className="text-sm text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-300">
-                QuantPilot
+                PrismX
               </Link>
               <span className="text-slate-300 dark:text-slate-700">/</span>
               <h1 className="text-2xl font-semibold tracking-normal text-slate-950 dark:text-white">投研日报</h1>

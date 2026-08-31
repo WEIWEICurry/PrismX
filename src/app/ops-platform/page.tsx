@@ -5,7 +5,7 @@ import WorkspacesHealthClient from './WorkspacesHealthClient';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '运维平台 · QuantPilot',
+  title: '运维平台 · PrismX',
 };
 
 type Props = {

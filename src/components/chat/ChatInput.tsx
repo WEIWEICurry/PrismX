@@ -53,7 +53,7 @@ interface ChatInputProps {
 export default function ChatInput({
   onSendMessage,
   disabled = false,
-  placeholder = "向 QuantPilot 描述你的量化需求...",
+  placeholder = "向 PrismX 描述你的量化需求...",
   mode = 'act',
   onModeChange,
   projectId,

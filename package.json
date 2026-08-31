@@ -125,7 +125,7 @@
   },
   "build": {
     "appId": "com.quantpilot.desktop",
-    "productName": "QuantPilot",
+    "productName": "PrismX",
     "files": [
       "index.js",
       "electron/**/*",

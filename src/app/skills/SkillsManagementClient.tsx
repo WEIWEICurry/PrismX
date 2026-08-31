@@ -1287,7 +1287,7 @@ export default function SkillsManagementClient({ initialData }: { initialData: S
                     <p className="mt-1.5 text-sm font-semibold text-slate-500">
                       <span className="font-mono">{catalogSkill.id}</span>
                       <span className="px-2 text-slate-300">/</span>
-                      <span>作者 QuantPilot</span>
+                      <span>作者 PrismX</span>
                     </p>
                   </div>
                   <button

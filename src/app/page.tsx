@@ -611,7 +611,7 @@ export default function HomePage() {
             Q
           </div>
           <h1 className="text-base font-bold tracking-tight md:text-lg">
-            QuantPilot
+            PrismX
           </h1>
           <div className="hidden items-center gap-1.5 md:flex">
             <span className="text-xs text-muted-foreground">·</span>

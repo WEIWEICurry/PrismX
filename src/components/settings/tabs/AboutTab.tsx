@@ -10,20 +10,20 @@ function AboutTab() {
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#DE7356]/20 to-[#DE7356]/5 blur-xl" />
           <Image
             src="/QuantPilot_Icon.png"
-            alt="QuantPilot Icon"
+            alt="PrismX Icon"
             width={80}
             height={80}
             className="relative z-10 h-full w-full rounded-2xl object-contain shadow-lg"
           />
         </div>
-        <h3 className="text-2xl font-bold text-slate-900">QuantPilot</h3>
+        <h3 className="text-2xl font-bold text-slate-900">PrismX</h3>
         <p className="mt-2 font-medium text-slate-600">Version 1.0.0</p>
       </div>
 
       <div className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-6">
         <div className="text-center">
           <p className="mx-auto max-w-2xl text-base leading-relaxed text-slate-700">
-            QuantPilot 是面向量化研发的 AI 工作台，支持通过 Claude Code 兼容运行时接入外部模型，
+            PrismX 是面向量化研发的 AI 工作台，支持通过 Claude Code 兼容运行时接入外部模型，
             并串联 GitHub、Supabase 与 Vercel 等工程化服务。
           </p>
         </div>

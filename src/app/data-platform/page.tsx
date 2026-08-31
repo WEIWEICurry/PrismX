@@ -3,7 +3,7 @@ import CapabilityCenterClient from './CapabilityCenterClient';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '数据平台 · QuantPilot',
+  title: '数据平台 · PrismX',
 };
 
 export default async function DataPlatformPage() {

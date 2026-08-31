@@ -3,7 +3,7 @@ import { getResearchAutomationDashboard } from '@/lib/quant/research-reports';
 import ResearchReportsClient from './ResearchReportsClient';
 
 export const metadata: Metadata = {
-  title: '投研日报 · QuantPilot',
+  title: '投研日报 · PrismX',
 };
 
 export default async function ResearchReportsPage() {

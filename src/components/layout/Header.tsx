@@ -49,7 +49,7 @@ export default function Header() {
             )}
             <div className="h-8 flex items-center">
               <span className="text-2xl font-bold text-[#DE7356] leading-none">
-                QuantPilot
+                PrismX
               </span>
             </div>
             <nav className="flex items-center gap-3" />
