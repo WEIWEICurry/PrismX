@@ -26,7 +26,10 @@ import {
 } from "lucide-react";
 import GlobalSettings from "@/components/settings/GlobalSettings";
 import { useGlobalSettings } from "@/contexts/GlobalSettingsContext";
-import { getDefaultModelForCli, getModelDisplayName } from "@/lib/constants/cliModels";
+import {
+  getDefaultModelForCli,
+  getModelDisplayName,
+} from "@/lib/constants/cliModels";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -44,7 +47,10 @@ import { TaskDrawer } from "@/components/task/TaskDrawer";
 import { CreateTaskForm } from "@/components/task/CreateTaskForm";
 import type { UploadedImage } from "@/components/task/CreateTaskForm";
 import type { Project as ProjectSummary } from "@/types/project";
-import { fetchCliStatusSnapshot, createCliStatusFallback } from "@/hooks/useCLI";
+import {
+  fetchCliStatusSnapshot,
+  createCliStatusFallback,
+} from "@/hooks/useCLI";
 import type { CLIStatus } from "@/types/cli";
 import {
   ACTIVE_CLI_MODEL_OPTIONS,
@@ -67,7 +73,10 @@ import { cn } from "@/lib/utils";
 const fetchAPI = globalThis.fetch || fetch;
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "";
 
-const ASSISTANT_OPTIONS = ACTIVE_CLI_OPTIONS.map(({ id, name }) => ({ id, name }));
+const ASSISTANT_OPTIONS = ACTIVE_CLI_OPTIONS.map(({ id, name }) => ({
+  id,
+  name,
+}));
 
 const CAPABILITY_ICONS: Record<string, React.ReactNode> = {
   stock_diagnosis: <Activity className="h-5 w-5" />,
@@ -81,25 +90,34 @@ const CAPABILITY_ICONS: Record<string, React.ReactNode> = {
 };
 
 const CAPABILITY_COLORS: Record<string, string> = {
-  stock_diagnosis: "from-blue-500/10 to-blue-600/5 border-blue-200/60 hover:border-blue-300",
-  technical_analysis: "from-emerald-500/10 to-emerald-600/5 border-emerald-200/60 hover:border-emerald-300",
-  fundamental_analysis: "from-violet-500/10 to-violet-600/5 border-violet-200/60 hover:border-violet-300",
-  asset_comparison: "from-amber-500/10 to-amber-600/5 border-amber-200/60 hover:border-amber-300",
-  sector_rotation: "from-rose-500/10 to-rose-600/5 border-rose-200/60 hover:border-rose-300",
-  strategy_research: "from-cyan-500/10 to-cyan-600/5 border-cyan-200/60 hover:border-cyan-300",
-  backtest_review: "from-orange-500/10 to-orange-600/5 border-orange-200/60 hover:border-orange-300",
-  portfolio_risk: "from-indigo-500/10 to-indigo-600/5 border-indigo-200/60 hover:border-indigo-300",
+  stock_diagnosis:
+    "from-cyan-500/10 to-blue-500/5 border-cyan-500/20 hover:border-cyan-500/45",
+  technical_analysis:
+    "from-emerald-500/10 to-teal-500/5 border-emerald-500/20 hover:border-emerald-500/45",
+  fundamental_analysis:
+    "from-blue-500/10 to-indigo-500/5 border-blue-500/20 hover:border-blue-500/45",
+  asset_comparison:
+    "from-teal-500/10 to-cyan-500/5 border-teal-500/20 hover:border-teal-500/45",
+  sector_rotation:
+    "from-sky-500/10 to-cyan-500/5 border-sky-500/20 hover:border-sky-500/45",
+  strategy_research:
+    "from-cyan-500/10 to-emerald-500/5 border-cyan-500/20 hover:border-cyan-500/45",
+  backtest_review:
+    "from-indigo-500/10 to-blue-500/5 border-indigo-500/20 hover:border-indigo-500/45",
+  portfolio_risk:
+    "from-emerald-500/10 to-cyan-500/5 border-emerald-500/20 hover:border-emerald-500/45",
 };
 
 const CAPABILITY_ICON_COLORS: Record<string, string> = {
-  stock_diagnosis: "text-blue-600 bg-blue-100",
-  technical_analysis: "text-emerald-600 bg-emerald-100",
-  fundamental_analysis: "text-violet-600 bg-violet-100",
-  asset_comparison: "text-amber-600 bg-amber-100",
-  sector_rotation: "text-rose-600 bg-rose-100",
-  strategy_research: "text-cyan-600 bg-cyan-100",
-  backtest_review: "text-orange-600 bg-orange-100",
-  portfolio_risk: "text-indigo-600 bg-indigo-100",
+  stock_diagnosis: "text-cyan-700 bg-cyan-500/10 dark:text-cyan-300",
+  technical_analysis:
+    "text-emerald-700 bg-emerald-500/10 dark:text-emerald-300",
+  fundamental_analysis: "text-blue-700 bg-blue-500/10 dark:text-blue-300",
+  asset_comparison: "text-teal-700 bg-teal-500/10 dark:text-teal-300",
+  sector_rotation: "text-sky-700 bg-sky-500/10 dark:text-sky-300",
+  strategy_research: "text-cyan-700 bg-cyan-500/10 dark:text-cyan-300",
+  backtest_review: "text-indigo-700 bg-indigo-500/10 dark:text-indigo-300",
+  portfolio_risk: "text-emerald-700 bg-emerald-500/10 dark:text-emerald-300",
 };
 
 const PLATFORM_NAV_ITEMS = [
@@ -114,7 +132,9 @@ export default function HomePage() {
   // --- State ---
   const [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [showGlobalSettings, setShowGlobalSettings] = useState(false);
-  const [editingProject, setEditingProject] = useState<ProjectSummary | null>(null);
+  const [editingProject, setEditingProject] = useState<ProjectSummary | null>(
+    null,
+  );
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
     project: ProjectSummary | null;
@@ -131,22 +151,22 @@ export default function HomePage() {
 
   const sanitizeAssistant = useCallback(
     (cli?: string | null) => sanitizeActiveCli(cli, DEFAULT_ASSISTANT),
-    [DEFAULT_ASSISTANT]
+    [DEFAULT_ASSISTANT],
   );
   const normalizeModelForAssistant = useCallback(
     (assistant: string, model?: string | null) =>
       normalizeModelForCli(assistant, model, DEFAULT_ASSISTANT),
-    [DEFAULT_ASSISTANT]
+    [DEFAULT_ASSISTANT],
   );
 
   const normalizeProjectPayload = useCallback(
     (project: any): ProjectSummary => {
       const preferred = sanitizeAssistant(
-        project?.preferredCli ?? project?.preferred_cli
+        project?.preferredCli ?? project?.preferred_cli,
       );
       const selected = normalizeModelForAssistant(
         preferred,
-        project?.selectedModel ?? project?.selected_model
+        project?.selectedModel ?? project?.selected_model,
       );
       return {
         id: project.id,
@@ -158,8 +178,7 @@ export default function HomePage() {
           project.createdAt ?? project.created_at ?? new Date().toISOString(),
         updatedAt: project.updatedAt ?? project.updated_at,
         lastActiveAt: project.lastActiveAt ?? project.last_active_at ?? null,
-        lastMessageAt:
-          project.lastMessageAt ?? project.last_message_at ?? null,
+        lastMessageAt: project.lastMessageAt ?? project.last_message_at ?? null,
         initialPrompt: project.initialPrompt ?? project.initial_prompt ?? null,
         services: project.services,
         preferredCli: preferred as ProjectSummary["preferredCli"],
@@ -167,11 +186,11 @@ export default function HomePage() {
         fallbackEnabled:
           project.fallbackEnabled ?? project.fallback_enabled ?? false,
         quantCapabilityId: getQuantCapability(
-          project.quantCapabilityId ?? project.quant_capability_id
+          project.quantCapabilityId ?? project.quant_capability_id,
         ).id,
       };
     },
-    [sanitizeAssistant, normalizeModelForAssistant]
+    [sanitizeAssistant, normalizeModelForAssistant],
   );
 
   const [selectedAssistant, setSelectedAssistant] =
@@ -182,7 +201,7 @@ export default function HomePage() {
   const [usingGlobalDefaults, setUsingGlobalDefaults] = useState(true);
   const [taskDrawerOpen, setTaskDrawerOpen] = useState(false);
   const [cliStatus, setCLIStatus] = useState<CLIStatus>(() =>
-    createCliStatusFallback()
+    createCliStatusFallback(),
   );
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
@@ -195,8 +214,7 @@ export default function HomePage() {
   const prefetchTimers = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const { settings: globalSettings } = useGlobalSettings();
 
-  const availableModels =
-    ACTIVE_CLI_MODEL_OPTIONS[selectedAssistant] || [];
+  const availableModels = ACTIVE_CLI_MODEL_OPTIONS[selectedAssistant] || [];
   const selectedModelLabel =
     availableModels.find((m) => m.id === selectedModel)?.name ??
     getModelDisplayName(selectedAssistant, selectedModel);
@@ -204,7 +222,7 @@ export default function HomePage() {
     QUANT_CAPABILITIES.find((c) => c.id === selectedCapability) ??
     QUANT_CAPABILITIES[0];
   const runningProjects = projects.filter(
-    (p) => p.previewUrl || p.status === "running"
+    (p) => p.previewUrl || p.status === "running",
   ).length;
 
   // --- Session persistence ---
@@ -222,8 +240,8 @@ export default function HomePage() {
         setSelectedModel(
           normalizeModelForAssistant(
             sanitizeAssistant(storedAssistantRaw),
-            storedModelRaw
-          )
+            storedModelRaw,
+          ),
         );
         setUsingGlobalDefaults(false);
         setIsInitialLoad(false);
@@ -253,7 +271,7 @@ export default function HomePage() {
       sessionStorage.setItem("selectedAssistant", normalizedAssistant);
       sessionStorage.setItem(
         "selectedModel",
-        normalizeModelForAssistant(normalizedAssistant, selectedModel)
+        normalizeModelForAssistant(normalizedAssistant, selectedModel),
       );
     }
   }, [
@@ -273,13 +291,15 @@ export default function HomePage() {
 
   // --- CLI status ---
   useEffect(() => {
-    const checkingStatus = ASSISTANT_OPTIONS.reduce<CLIStatus>(
-      (acc, cli) => {
-        acc[cli.id] = { installed: true, available: true, configured: true, checking: true };
-        return acc;
-      },
-      createCliStatusFallback()
-    );
+    const checkingStatus = ASSISTANT_OPTIONS.reduce<CLIStatus>((acc, cli) => {
+      acc[cli.id] = {
+        installed: true,
+        available: true,
+        configured: true,
+        checking: true,
+      };
+      return acc;
+    }, createCliStatusFallback());
     setCLIStatus(checkingStatus);
     fetchCliStatusSnapshot()
       .then(setCLIStatus)
@@ -308,7 +328,9 @@ export default function HomePage() {
           ? payload
           : [];
       const normalized: ProjectSummary[] = items
-        .filter((p): p is Record<string, unknown> => Boolean(p && typeof p === "object"))
+        .filter((p): p is Record<string, unknown> =>
+          Boolean(p && typeof p === "object"),
+        )
         .map(normalizeProjectPayload);
       const sorted = normalized.sort((a, b) => {
         const aTime = a.lastMessageAt ?? a.createdAt;
@@ -342,29 +364,39 @@ export default function HomePage() {
     setNavigatingPath(null);
   }, [pathname]);
 
-  const prefetchPlatformRoute = useCallback((href: string) => {
-    const timers = prefetchTimers.current;
-    if (timers.has(href)) return;
-    const timer = setTimeout(() => {
-      router.prefetch(href);
-      timers.delete(href);
-    }, 80);
-    timers.set(href, timer);
-  }, [router]);
+  const prefetchPlatformRoute = useCallback(
+    (href: string) => {
+      const timers = prefetchTimers.current;
+      if (timers.has(href)) return;
+      const timer = setTimeout(() => {
+        router.prefetch(href);
+        timers.delete(href);
+      }, 80);
+      timers.set(href, timer);
+    },
+    [router],
+  );
 
-  const navigateToPlatform = useCallback((href: string) => {
-    if (navigatingPath === href) return;
-    setNavigatingPath(href);
-    startRouteTransition(() => {
-      router.push(href);
-    });
-  }, [navigatingPath, router]);
+  const navigateToPlatform = useCallback(
+    (href: string) => {
+      if (navigatingPath === href) return;
+      setNavigatingPath(href);
+      startRouteTransition(() => {
+        router.push(href);
+      });
+    },
+    [navigatingPath, router],
+  );
 
   // --- Format helpers ---
   const formatTime = (dateString: string | null) => {
     if (!dateString) return "暂无记录";
     let utc = dateString;
-    if (!dateString.endsWith("Z") && !dateString.includes("+") && !dateString.match(/[-+]\d{2}:\d{2}$/)) {
+    if (
+      !dateString.endsWith("Z") &&
+      !dateString.includes("+") &&
+      !dateString.match(/[-+]\d{2}:\d{2}$/)
+    ) {
       utc = dateString + "Z";
     }
     const date = new Date(utc);
@@ -402,7 +434,7 @@ export default function HomePage() {
       setToast({ message, type });
       setTimeout(() => setToast(null), 4000);
     },
-    []
+    [],
   );
 
   const openDeleteModal = (project: ProjectSummary) =>
@@ -416,7 +448,7 @@ export default function HomePage() {
     try {
       const r = await fetchAPI(
         `${API_BASE}/api/projects/${deleteModal.project.id}`,
-        { method: "DELETE" }
+        { method: "DELETE" },
       );
       if (r.ok) {
         showToast("任务已删除", "success");
@@ -458,7 +490,7 @@ export default function HomePage() {
     if (selectedAssistant) params.set("cli", selectedAssistant);
     if (selectedModel) params.set("model", selectedModel);
     router.push(
-      `/${project.id}/chat${params.toString() ? "?" + params.toString() : ""}`
+      `/${project.id}/chat${params.toString() ? "?" + params.toString() : ""}`,
     );
   };
 
@@ -491,7 +523,9 @@ export default function HomePage() {
       }
       const payload = await r.json();
       const projectData =
-        payload && typeof payload === "object" ? payload.data ?? payload : payload;
+        payload && typeof payload === "object"
+          ? (payload.data ?? payload)
+          : payload;
       const createdProjectId: string | undefined = projectData?.id ?? projectId;
 
       // Upload images
@@ -503,7 +537,7 @@ export default function HomePage() {
           fd.append("file", image.file);
           const uploadR = await fetchAPI(
             `${API_BASE}/api/assets/${createdProjectId}/upload`,
-            { method: "POST", body: fd }
+            { method: "POST", body: fd },
           );
           if (uploadR.ok) {
             const result = await uploadR.json();
@@ -546,7 +580,7 @@ export default function HomePage() {
       if (selectedAssistant) params.set("cli", selectedAssistant);
       if (selectedModel) params.set("model", selectedModel);
       router.push(
-        `/${createdProjectId}/chat${params.toString() ? "?" + params.toString() : ""}`
+        `/${createdProjectId}/chat${params.toString() ? "?" + params.toString() : ""}`,
       );
     } catch {
       showToast("创建任务失败", "error");
@@ -562,7 +596,7 @@ export default function HomePage() {
       if (!status || status.checking) return true;
       return Boolean(status.installed || status.available || status.configured);
     },
-    [cliStatus]
+    [cliStatus],
   );
 
   const handleAssistantChange = (assistant: string) => {
@@ -591,7 +625,9 @@ export default function HomePage() {
       setPrompt(cap.inputHint);
     }
     // Scroll to input
-    document.getElementById("task-input")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    document
+      .getElementById("task-input")
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   // --- Group capabilities ---
@@ -599,23 +635,28 @@ export default function HomePage() {
     ...group,
     capabilities: QUANT_CAPABILITIES.filter((c) => c.groupId === group.id),
   }));
-  const navigatingItem = PLATFORM_NAV_ITEMS.find((item) => item.href === navigatingPath) ?? null;
+  const navigatingItem =
+    PLATFORM_NAV_ITEMS.find((item) => item.href === navigatingPath) ?? null;
 
   // --- Render ---
   return (
-    <div className="relative flex min-h-screen flex-col bg-background text-foreground">
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-background text-foreground">
+      <div className="fintech-grid pointer-events-none absolute inset-0" />
+      <div className="pointer-events-none absolute -left-40 top-24 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-40 top-72 h-[28rem] w-[28rem] rounded-full bg-blue-500/10 blur-3xl" />
       {/* Top navigation */}
-      <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between border-b bg-background/80 px-3 backdrop-blur-xl md:px-6">
+      <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-border/60 bg-background/75 px-3 shadow-[0_1px_0_hsl(var(--primary)/0.06)] backdrop-blur-2xl md:px-6">
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground shadow-sm">
-            Q
+          <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-primary/30 bg-slate-950 text-[10px] font-black tracking-tight text-emerald-300 shadow-[0_0_24px_hsl(var(--primary)/0.25)]">
+            <span className="absolute inset-x-1 top-1 h-px bg-gradient-to-r from-transparent via-emerald-300 to-transparent" />
+            PX
           </div>
-          <h1 className="text-base font-bold tracking-tight md:text-lg">
+          <h1 className="text-base font-black tracking-[-0.03em] md:text-lg">
             PrismX
           </h1>
           <div className="hidden items-center gap-1.5 md:flex">
             <span className="text-xs text-muted-foreground">·</span>
-            <span className="text-xs text-muted-foreground">
+            <span className="fintech-kicker text-[10px] font-semibold text-muted-foreground">
               {selectedModelLabel}
             </span>
           </div>
@@ -630,7 +671,10 @@ export default function HomePage() {
             <Clock3 className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">最近任务</span>
             {projects.length > 0 && (
-              <Badge variant="secondary" className="ml-0.5 h-5 px-1.5 text-[10px]">
+              <Badge
+                variant="secondary"
+                className="ml-0.5 h-5 px-1.5 text-[10px]"
+              >
                 {projects.length}
               </Badge>
             )}
@@ -640,7 +684,9 @@ export default function HomePage() {
         <div className="flex items-center gap-1.5">
           {PLATFORM_NAV_ITEMS.map((item) => {
             const Icon = item.icon;
-            const isLoading = navigatingPath === item.href || (isRoutePending && navigatingPath === item.href);
+            const isLoading =
+              navigatingPath === item.href ||
+              (isRoutePending && navigatingPath === item.href);
             return (
               <Button
                 key={item.href}
@@ -653,7 +699,11 @@ export default function HomePage() {
                 aria-busy={isLoading}
                 className="gap-1.5 px-2 text-xs sm:px-3"
               >
-                {isLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Icon className="h-3.5 w-3.5" />}
+                {isLoading ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Icon className="h-3.5 w-3.5" />
+                )}
                 <span className="hidden sm:inline">{item.label}</span>
               </Button>
             );
@@ -703,27 +753,53 @@ export default function HomePage() {
       </AnimatePresence>
 
       {/* Main content */}
-      <main className="flex flex-1 flex-col items-center px-4 pt-12 pb-16 md:pt-20 md:pb-24">
+      <main className="relative z-10 flex flex-1 flex-col items-center px-4 pb-16 pt-14 md:pb-24 md:pt-20">
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="mb-10 text-center md:mb-14"
+          className="mb-10 max-w-5xl text-center md:mb-12"
         >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
-            <Sparkles className="h-3 w-3 text-primary" />
-            AI 驱动的量化金融分析平台
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-3.5 py-1.5 text-xs font-medium text-primary shadow-[0_0_30px_hsl(var(--primary)/0.08)]">
+            <span className="fintech-dot h-1.5 w-1.5 rounded-full bg-primary" />
+            MARKET INTELLIGENCE ONLINE
           </div>
-          <h2 className="text-3xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-            <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-              量化分析
+          <h2 className="text-4xl font-black tracking-[-0.055em] md:text-6xl lg:text-7xl">
+            洞察市场脉搏
+            <span className="block bg-gradient-to-r from-emerald-500 via-cyan-500 to-blue-500 bg-clip-text text-transparent">
+              驱动量化决策
             </span>
-            ，一句话搞定
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm text-muted-foreground md:text-base">
-            描述你的金融分析需求，系统自动识别任务类型，获取真实数据，生成可验证的量化看板
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">
+            用自然语言连接实时数据、量化模型与可验证分析，让每一次研究都更快、更深、更可信。
           </p>
+          <div className="mx-auto mt-7 grid max-w-2xl grid-cols-3 divide-x divide-border/70 rounded-2xl border border-border/60 bg-card/55 px-3 py-3 shadow-sm backdrop-blur-xl">
+            <div className="px-2">
+              <div className="font-mono text-sm font-bold text-primary">
+                REAL DATA
+              </div>
+              <div className="mt-1 text-[10px] text-muted-foreground">
+                真实行情数据
+              </div>
+            </div>
+            <div className="px-2">
+              <div className="font-mono text-sm font-bold text-primary">
+                AI AGENT
+              </div>
+              <div className="mt-1 text-[10px] text-muted-foreground">
+                智能研究引擎
+              </div>
+            </div>
+            <div className="px-2">
+              <div className="font-mono text-sm font-bold text-primary">
+                TRACEABLE
+              </div>
+              <div className="mt-1 text-[10px] text-muted-foreground">
+                全链路可追溯
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         {/* Input form */}
@@ -732,7 +808,7 @@ export default function HomePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-          className="w-full max-w-3xl"
+          className="w-full max-w-4xl"
         >
           <CreateTaskForm
             prompt={prompt}
@@ -757,12 +833,12 @@ export default function HomePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.25, ease: "easeOut" }}
-          className="mt-14 w-full max-w-5xl md:mt-20"
+          className="mt-14 w-full max-w-6xl md:mt-20"
         >
           {groupedCapabilities.map((group) => (
             <div key={group.id} className="mb-8 last:mb-0">
-              <div className="mb-3 flex items-center gap-2">
-                <h3 className="text-sm font-semibold text-foreground">
+              <div className="mb-4 flex items-end justify-between gap-3 border-b border-border/60 pb-3">
+                <h3 className="text-sm font-bold tracking-tight text-foreground">
                   {group.name}
                 </h3>
                 <span className="text-xs text-muted-foreground">
@@ -777,20 +853,22 @@ export default function HomePage() {
                     <button
                       key={cap.id}
                       type="button"
-                      onClick={() => !isPlanned && handleCapabilityCardClick(cap.id)}
+                      onClick={() =>
+                        !isPlanned && handleCapabilityCardClick(cap.id)
+                      }
                       disabled={isPlanned}
                       className={cn(
-                        "group relative flex flex-col items-start gap-2.5 rounded-xl border bg-gradient-to-br p-4 text-left transition-all",
+                        "fintech-panel group relative flex flex-col items-start gap-3 overflow-hidden rounded-2xl bg-gradient-to-br p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_-28px_hsl(var(--primary)/0.5)]",
                         CAPABILITY_COLORS[cap.id],
-                        isActive && "ring-2 ring-primary/30",
-                        isPlanned && "opacity-60 cursor-not-allowed"
+                        isActive && "border-primary/55 ring-2 ring-primary/20",
+                        isPlanned && "opacity-60 cursor-not-allowed",
                       )}
                     >
                       <div className="flex items-center gap-2.5">
                         <div
                           className={cn(
-                            "flex h-9 w-9 items-center justify-center rounded-lg",
-                            CAPABILITY_ICON_COLORS[cap.id]
+                            "flex h-10 w-10 items-center justify-center rounded-xl border border-current/10",
+                            CAPABILITY_ICON_COLORS[cap.id],
                           )}
                         >
                           {CAPABILITY_ICONS[cap.id]}
@@ -818,7 +896,7 @@ export default function HomePage() {
                         {cap.tags.slice(0, 3).map((tag) => (
                           <span
                             key={tag}
-                            className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground"
+                            className="rounded-md border border-border/50 bg-background/55 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground"
                           >
                             {tag}
                           </span>

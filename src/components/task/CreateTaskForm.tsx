@@ -101,7 +101,7 @@ function CreateTaskForm({
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
     },
-    [uploadedImages, onImagesChange]
+    [uploadedImages, onImagesChange],
   );
 
   const removeImage = (id: string) => {
@@ -109,7 +109,7 @@ function CreateTaskForm({
       uploadedImages.filter((img) => {
         if (img.id === id && img.url) URL.revokeObjectURL(img.url);
         return img.id !== id;
-      })
+      }),
     );
   };
 
@@ -143,12 +143,24 @@ function CreateTaskForm({
         if (e.dataTransfer.files.length > 0) handleFiles(e.dataTransfer.files);
       }}
       className={cn(
-        "relative w-full rounded-2xl border bg-card text-card-foreground shadow-lg transition-all",
+        "fintech-panel relative w-full overflow-hidden rounded-3xl text-card-foreground transition-all duration-300",
         isDragOver
-          ? "border-primary shadow-primary/10"
-          : "border-border/60 shadow-black/5"
+          ? "border-primary shadow-[0_0_0_4px_hsl(var(--primary)/0.08),0_28px_80px_-36px_hsl(var(--primary)/0.55)]"
+          : "border-border/70 shadow-[0_28px_80px_-42px_hsl(190_90%_20%/0.48)]",
       )}
     >
+      <div className="relative z-[1] flex items-center justify-between border-b border-border/50 px-5 py-3">
+        <div className="flex items-center gap-2">
+          <span className="fintech-dot h-1.5 w-1.5 rounded-full bg-primary" />
+          <span className="fintech-kicker text-[10px] font-bold text-muted-foreground">
+            PrismX Research Terminal
+          </span>
+        </div>
+        <span className="font-mono text-[10px] text-primary">
+          SECURE · LIVE
+        </span>
+      </div>
+
       {/* Uploaded image previews */}
       {uploadedImages.length > 0 && (
         <div className="flex flex-wrap gap-2 px-5 pt-4">
@@ -179,9 +191,13 @@ function CreateTaskForm({
       <Textarea
         value={prompt}
         onChange={(e) => onPromptChange(e.target.value)}
-        placeholder={selectedRole.inputPlaceholder ?? selectedRole.inputHint ?? "描述你的金融分析需求..."}
+        placeholder={
+          selectedRole.inputPlaceholder ??
+          selectedRole.inputHint ??
+          "描述你的金融分析需求..."
+        }
         disabled={isCreating}
-        className="min-h-[100px] resize-none border-0 bg-transparent px-5 pt-4 pb-2 text-base leading-6 shadow-none focus-visible:ring-0 md:min-h-[120px]"
+        className="relative z-[1] min-h-[112px] resize-none border-0 bg-transparent px-5 pb-3 pt-5 text-base leading-7 shadow-none placeholder:text-muted-foreground/70 focus-visible:ring-0 md:min-h-[136px]"
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
@@ -202,7 +218,7 @@ function CreateTaskForm({
       )}
 
       {/* Toolbar */}
-      <div className="flex items-center gap-2 border-t border-border/40 px-3 py-2.5">
+      <div className="relative z-[1] flex flex-wrap items-center gap-2 border-t border-border/50 bg-muted/20 px-3 py-3">
         {/* Upload button */}
         <Button
           type="button"
@@ -227,7 +243,7 @@ function CreateTaskForm({
         </Button>
 
         {/* Capability badge */}
-        <div className="flex items-center gap-1.5 rounded-md bg-muted/60 px-2 py-1">
+        <div className="flex items-center gap-1.5 rounded-lg border border-primary/15 bg-primary/5 px-2.5 py-1.5">
           <span className="text-xs font-medium text-muted-foreground">
             {selectedRole.shortName ?? selectedRole.name}
           </span>
@@ -235,7 +251,7 @@ function CreateTaskForm({
 
         {/* Assistant selector */}
         <Select value={selectedAssistant} onValueChange={onAssistantChange}>
-          <SelectTrigger className="h-8 w-auto gap-1.5 border-0 bg-muted/60 px-2 text-xs font-medium text-muted-foreground hover:bg-muted">
+          <SelectTrigger className="h-8 w-auto gap-1.5 border border-border/60 bg-background/60 px-2.5 text-xs font-medium text-muted-foreground hover:border-primary/30 hover:bg-accent">
             <SelectValue placeholder="助手" />
           </SelectTrigger>
           <SelectContent>
@@ -254,7 +270,7 @@ function CreateTaskForm({
         {/* Model selector */}
         {modelOptions.length > 0 && (
           <Select value={selectedModel} onValueChange={onModelChange}>
-            <SelectTrigger className="h-8 w-auto gap-1.5 border-0 bg-muted/60 px-2 text-xs font-medium text-muted-foreground hover:bg-muted">
+            <SelectTrigger className="h-8 w-auto gap-1.5 border border-border/60 bg-background/60 px-2.5 text-xs font-medium text-muted-foreground hover:border-primary/30 hover:bg-accent">
               <SelectValue placeholder="模型" />
             </SelectTrigger>
             <SelectContent>
@@ -270,9 +286,11 @@ function CreateTaskForm({
         {/* Submit button */}
         <Button
           type="submit"
-          disabled={(!prompt.trim() && uploadedImages.length === 0) || isCreating}
+          disabled={
+            (!prompt.trim() && uploadedImages.length === 0) || isCreating
+          }
           size="icon"
-          className="ml-auto h-8 w-8 rounded-lg"
+          className="ml-auto h-9 w-9 rounded-xl shadow-[0_8px_24px_-10px_hsl(var(--primary))]"
           aria-label="提交任务"
         >
           {isCreating ? (

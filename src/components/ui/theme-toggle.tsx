@@ -20,7 +20,7 @@ export function ThemeToggle({ className, compact = false }: ThemeToggleProps) {
   return (
     <div
       className={cn(
-        "inline-flex h-8 items-center gap-0.5 rounded-md border border-border bg-muted/50 p-0.5",
+        "inline-flex h-8 items-center gap-0.5 rounded-lg border border-border/70 bg-muted/40 p-0.5 shadow-inner",
         className,
       )}
       role="group"
@@ -40,13 +40,15 @@ export function ThemeToggle({ className, compact = false }: ThemeToggleProps) {
             className={cn(
               "inline-flex h-7 items-center justify-center gap-1.5 rounded px-2 text-xs font-medium transition-colors",
               active
-                ? "bg-background text-foreground shadow-sm"
+                ? "bg-background text-primary shadow-sm ring-1 ring-border/60"
                 : "text-muted-foreground hover:bg-background/70 hover:text-foreground",
               compact ? "w-7 px-0" : "min-w-14",
             )}
           >
             <Icon className="h-3.5 w-3.5" />
-            {!compact && <span className="hidden sm:inline">{option.label}</span>}
+            {!compact && (
+              <span className="hidden sm:inline">{option.label}</span>
+            )}
           </button>
         );
       })}
