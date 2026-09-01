@@ -23,7 +23,7 @@ export const CLAUDE_MODEL_DEFINITIONS: ClaudeModelDefinition[] = [
   { id: "claude-sonnet-4-6", name: "Claude Sonnet 4.6", description: "The best combination of speed and intelligence", supportsImages: true, provider: "anthropic", runtime: "anthropic-compatible", aliases: ["claude-sonnet-4-6", "claude-sonnet-4.6", "claude-sonnet-4", "claude-sonnet", "sonnet-4-6", "sonnet-4.6", "sonnet-4", "sonnet", "claude-sonnet-4-5-20250929", "claude-sonnet-4-5", "claude-sonnet-4.5", "claude-3.5-sonnet", "claude-3-5-sonnet", "claude-3-5-sonnet-20241022", "claude-3-5-sonnet-latest"] },
   { id: "claude-haiku-4-5-20251001", name: "Claude Haiku 4.5", description: "The fastest model with near-frontier intelligence", supportsImages: true, provider: "anthropic", runtime: "anthropic-compatible", aliases: ["claude-haiku-4-5-20251001", "claude-haiku-4-5", "claude-haiku-4.5", "claude-haiku-4", "claude-haiku", "haiku-4-5-20251001", "haiku-4-5", "haiku-4.5", "haiku-4", "haiku", "claude-3-haiku", "claude-3-haiku-20240307", "claude-3-haiku-latest", "claude-haiku-3.5"] },
 ];
-export const CLAUDE_DEFAULT_MODEL: ClaudeModelId = "mimo-v2.5-pro";
+export const CLAUDE_DEFAULT_MODEL: ClaudeModelId = "deepseek-v4-pro";
 
 const CLAUDE_MODEL_ALIAS_MAP: Record<string, ClaudeModelId> = CLAUDE_MODEL_DEFINITIONS.reduce((map, def) => {
   def.aliases.forEach((a) => { map[a.trim().toLowerCase().replace(/[\s_]+/g, "-")] = def.id; });
