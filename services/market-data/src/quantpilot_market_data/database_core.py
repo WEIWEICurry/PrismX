@@ -93,7 +93,7 @@ def database_url_from_env() -> str:
 async def connect() -> psycopg.AsyncConnection:
     try:
         return await psycopg.AsyncConnection.connect(database_url_from_env())
-    except psycopg.OperationalError as error:
+    except psycopg.Error as error:
         raise DatabaseError(f"无法连接 TimescaleDB：{error}") from error
 
 

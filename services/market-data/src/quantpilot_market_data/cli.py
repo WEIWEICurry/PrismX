@@ -1,8 +1,14 @@
 from __future__ import annotations
 
+import asyncio
 import os
+import sys
 
 import uvicorn
+
+
+def compatible_event_loop_factory() -> asyncio.AbstractEventLoop:
+    return asyncio.SelectorEventLoop()
 
 
 def main() -> None:
@@ -12,6 +18,7 @@ def main() -> None:
         "quantpilot_market_data.api:app",
         host=host,
         port=port,
+        loop=compatible_event_loop_factory if sys.platform == "win32" else "auto",
         reload=os.getenv("QUANTPILOT_MARKET_RELOAD", "0") == "1",
     )
 
